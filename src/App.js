@@ -8,25 +8,42 @@ const App = () => {
 
   const [recipes, setRecipe] = useState([]); //holds the array of recipe of search item
   const [search, setSearch] = useState(""); //state for the search
+  //another state that submits after we click the button
+  const [query, setQuery] = useState("chicken");
 
   //interpolate the variable id and keys within the request
-  const REQUEST = `https://api.edamam.com/search?q=chicken&app_id=${APP_ID}&app_key=${APP_KEYS}`;
+  const REQUEST = `https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEYS}`;
 
   useEffect(() => {
     getRecipes();
-  }, []);
+  }, [query]);
 
   const getRecipes = async () => {
     const response = await fetch(REQUEST);
     const data = await response.json();
     setRecipe(data.hits);
-    console.log(data.hits);
+  };
+
+  const updateSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const submit = (e) => {
+    //stop page refresh
+    e.preventDefault();
+    setQuery(search);
+    setSearch("");
   };
 
   return (
     <div className="App">
-      <form className="search-form">
-        <input className="search-bar" type="text"></input>
+      <form className="search-form" onSubmit={submit}>
+        <input
+          className="search-bar"
+          type="text"
+          value={search}
+          onChange={updateSearch}
+        ></input>
         <button className="search-button" type="submit">
           search
         </button>

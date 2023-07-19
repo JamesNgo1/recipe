@@ -1,6 +1,6 @@
 import React from "react";
 
-function Recipe(props) {
+const Recipe = (props) => {
   return (
     <div>
       <h1>{props.title}</h1>
@@ -8,6 +8,6 @@ function Recipe(props) {
       <img src={props.image}></img>
     </div>
   );
-}
+};
 
 export default Recipe;
