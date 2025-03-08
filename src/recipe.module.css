@@ -9,3 +9,8 @@
   align-items: center;
   min-width: 40%;
 }
+
+.search-button:hover {
+  background-color: aliceblue;
+  cursor: pointer;
+}
