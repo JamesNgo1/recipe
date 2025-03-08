@@ -1,7 +1,6 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import Recipe from "./Recipe";
-import style from "./recipe.module.css";
 //require("dotenv").config();
 
 const App = () => {
@@ -16,15 +15,30 @@ const App = () => {
   //interpolate the variable id and keys within the request
   const REQUEST = `https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEYS}`;
 
+  // perform side effects based on the query being changed
   useEffect(() => {
     getRecipes();
   }, [query]);
 
   const getRecipes = async () => {
-    const response = await fetch(REQUEST);
-    const data = await response.json();
-    setRecipe(data.hits);
-    console.log(data.hits);
+    // Check if the query search is in the local storage cache first
+
+    const cachedData = localStorage.getItem(query);
+
+    // if cached exist used data from the local storage if not called the API call
+    if (cachedData) {
+      console.log("using the cached data");
+      setRecipe(JSON.parse(cachedData));
+    } else {
+      console.log("calling API as not cached");
+      const response = await fetch(REQUEST);
+      const data = await response.json();
+      console.log("show raw data");
+      console.log(data);
+      setRecipe(data.hits);
+      localStorage.setItem(query, JSON.stringify(data.hits));
+      console.log(data.hits);
+    }
   };
 
   const updateSearch = (e) => {
@@ -35,7 +49,7 @@ const App = () => {
     //stop page refresh
     e.preventDefault();
     setQuery(search);
-    setSearch("");
+    setSearch(""); //reset the search bar
   };
 
   return (
