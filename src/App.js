@@ -2,10 +2,11 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import Recipe from "./Recipe";
 import style from "./recipe.module.css";
+require("dotenv").config();
 
 const App = () => {
-  const APP_ID = "7e85eb37";
-  const APP_KEYS = "2d0f4b31031aa9cd87c8a0eaa8fcff16";
+  const APP_ID = process.env.APP_ID;
+  const APP_KEYS = process.env.APP_KEYS;
 
   const [recipes, setRecipe] = useState([]); //holds the array of recipe of search item
   const [search, setSearch] = useState(""); //state for the search
